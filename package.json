@@ -1,0 +1,11 @@
+{
+    "name": "rapid-search-test",
+    "version": "0.0.1",
+    "type": "module",
+    "devDependencies": {
+        "typescript": "5.2.2"
+    },
+    "scripts": {
+        "build": "tsc"
+    }
+}
