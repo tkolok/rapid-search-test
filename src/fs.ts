@@ -21,7 +21,7 @@ class FSClass {
         if (content) {
             return content.content;
         } else {
-            throw Error(`${filename} is not a valid file name.`);
+            throw Error(`"${filename}" is not a valid file name.`);
         }
     }
 
