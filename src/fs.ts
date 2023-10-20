@@ -12,31 +12,38 @@ export function FS(root: string): FSClass {
 }
 
 class FSClass {
-    private _contents: Map<string, FileContent> = new Map();
-    private _store: Map<string, FileContent> = new Map();
+    private _contents: Map<number, string> = new Map();
+    private _store: Map<string, number> = new Map();
 
     get(filename: string): string {
-        const content = this._store.get(filename);
+        const hashCode = this._store.get(filename);
 
-        if (content) {
-            return content.content;
+        if (hashCode) {
+            return this._contents.get(hashCode)!;
         } else {
             throw Error(`"${filename}" is not a valid file name.`);
         }
     }
 
     store(filename: string, content: string) {
-        let fc = this._contents.get(content);
+        const hashCode = hash(content);
 
-        if (!fc) {
-            fc = new FileContent(content);
-            this._contents.set(content, fc);
+        if (!this._contents.has(hashCode)) {
+            this._contents.set(hashCode, content);
         }
 
-        this._store.set(filename, fc!);
+        this._store.set(filename, hashCode);
     }
 }
 
-class FileContent {
-    constructor(public content: string) {}
+// https://stackoverflow.com/a/7616484
+function hash(str: string): number {
+    let hashCode = 0;
+
+    for (let index = 0; index < str.length; index++) {
+        hashCode = ((hashCode << 5) - hashCode) + str.charCodeAt(index);
+        hashCode |= 0;
+    }
+
+    return hashCode;
 }
